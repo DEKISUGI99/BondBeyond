@@ -2,10 +2,10 @@
 Bond Beyond is a social media application . Users can create accounts, post threads, comment on threads, and interact with other users.
 
 #Technologies Used
-Frontend: React, Chakra-UI, CSS
-Backend: Node.js, Express
-Database: MongoDB
-Authentication: JWT (JSON Web Tokens)
+Frontend: React, Chakra-UI, CSS,
+Backend: Node.js, Express,
+Database: MongoDB,
+Authentication: JWT (JSON Web Tokens),
 Real-time: Socket.IO
 
 #Usage
