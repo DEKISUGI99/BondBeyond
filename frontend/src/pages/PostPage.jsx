@@ -26,7 +26,7 @@ const PostPage = () => {
         </Flex>
       </Flex>
 
-      <Text my={3}>Let's talk about sax sux</Text>
+      <Text my={3}>Let's talk about </Text>
 
       <Box borderRadius={6} overflow="hidden" border="1px solid" borderColor="gray.light" my={3}>
         <Image src={'/ak.png'} w="full" />

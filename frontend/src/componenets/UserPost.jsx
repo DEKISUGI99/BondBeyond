@@ -6,6 +6,7 @@ import Action from './Action';
 
 const UserPost = ({postImg,postTitle,likes,replies}) => {
   const [liked, setLiked] = useState(false);
+  
 
   return (
     <Link to="/Akshatsingh/post/1">
