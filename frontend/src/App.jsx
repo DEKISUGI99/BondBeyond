@@ -6,29 +6,33 @@ import PostPage from "./pages/PostPage"
 import Header from "./componenets/Header"
 import HomePage from "./pages/HomePage"
 import AuthPage from "./pages/AuthPage";
-import './pages/LoginAndSignup.css'
+
 import { useRecoilValue } from "recoil"
 import userAtom from "./atoms/userAtom"
 import LogoutButton from "./pages/LogoutButton"
+import UpdateProfilePage from "./pages/UpdateProfilePage"
+import CreatePost from "./componenets/CreatePost"
 
 function App() {
   const user= useRecoilValue(userAtom)
 
   return (
     <Container maxW="620px">
-      <Box display="flex"> {/* Use Box to wrap sidebar and header */}
+      <Box display="flex">
          
-        <Box flex="1" ml="4"> {/* Use flex and ml for spacing */}
+        <Box flex="1" ml="4">
           <Header />
           <Routes>
             <Route path="/" element={ user ? <HomePage/> : <Navigate to="/auth"></Navigate>}/>
             <Route path="/auth//*" element={ !user ? <AuthPage/> : <Navigate to="/"></Navigate>}/>
+            <Route path="/update" element={ user ? <UpdateProfilePage/> : <Navigate to='/auth'/> }></Route> 
             <Route path="/:username" element={<UserPage />} />
             <Route path="/:username/post/:pid" element={<PostPage />} />
           </Routes>
         </Box>
       </Box>
       { user && <LogoutButton/>}
+      {user && <CreatePost/>}
     </Container>
   );
 }
