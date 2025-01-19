@@ -1,7 +1,12 @@
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
+<<<<<<< HEAD
  import { v2 as cloudinary } from "cloudinary";
 
+=======
+
+import { v2 as cloudinary } from 'cloudinary';
+>>>>>>> origin/main
 const createPost = async (req, res) => {
 	try {
 		const { postedBy, text } = req.body;
@@ -168,4 +173,8 @@ const getUserPosts = async (req, res) => {
 	}
 };
 
+<<<<<<< HEAD
 export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPosts, getUserPosts };
+=======
+export { createPost, getPost, deletePost, likeUnlikePost, replyToPost, getFeedPosts, getUserPosts };
+>>>>>>> origin/main

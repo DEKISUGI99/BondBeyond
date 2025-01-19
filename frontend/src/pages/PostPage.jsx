@@ -21,6 +21,7 @@ const PostPage = () => {
 
 	const currentPost = posts[0];
 
+<<<<<<< HEAD
 	useEffect(() => {
 		const getPost = async () => {
 			setPosts([]);
@@ -38,6 +39,9 @@ const PostPage = () => {
 		};
 		getPost();
 	}, [showToast, pid, setPosts]);
+=======
+      <Text my={3}>Let's talk about </Text>
+>>>>>>> origin/main
 
 	const handleDeletePost = async () => {
 		try {

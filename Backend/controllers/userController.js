@@ -1,8 +1,13 @@
 import User from "../models/userModel.js";
 import Post from "../models/postModel.js";
 import bcrypt from "bcryptjs";
+<<<<<<< HEAD
 import generateTokenAndSetCookie from "../utils/helper/generateTokenAndSetCookie.js";
 import { v2 as cloudinary } from "cloudinary";
+=======
+import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
+import { v2 as cloudinary } from 'cloudinary';
+>>>>>>> origin/main
 import mongoose from "mongoose";
 
 const getUserProfile = async (req, res) => {
@@ -32,6 +37,7 @@ const getUserProfile = async (req, res) => {
 
 const signupUser = async (req, res) => {
 	try {
+<<<<<<< HEAD
 	  const { name, email, username, password } = req.body;
   
 	  // Check if user already exists
@@ -76,6 +82,44 @@ const signupUser = async (req, res) => {
 	  return res.status(500).json({ error: "Server error" });
 	}
   };
+=======
+		const { name, email, username, password } = req.body;
+		const user = await User.findOne({ $or: [{ email }, { username }] });
+
+		if (user) {
+			return res.status(400).json({ error: "User already exists" });
+		}
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(password, salt);
+
+		const newUser = new User({
+			name,
+			email,
+			username,
+			password: hashedPassword,
+		});
+		await newUser.save();
+
+		if (newUser) {
+			generateTokenAndSetCookie(newUser._id, res);
+
+			res.status(201).json({
+				_id: newUser._id,
+				name: newUser.name,
+				email: newUser.email,
+				username: newUser.username,
+				bio: newUser.bio,
+				profilePic: newUser.profilePic,
+			});
+		} else {
+			res.status(400).json({ error: "Invalid user data" });
+		}
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+		console.log("Error in signupUser: ", err.message);
+	}
+};
+>>>>>>> origin/main
 
 const loginUser = async (req, res) => {
 	try {
@@ -85,6 +129,7 @@ const loginUser = async (req, res) => {
 
 		if (!user || !isPasswordCorrect) return res.status(400).json({ error: "Invalid username or password" });
 
+<<<<<<< HEAD
 		// if (user.isFrozen) {
 		// 	user.isFrozen = false;
 		// 	await user.save();
@@ -92,6 +137,15 @@ const loginUser = async (req, res) => {
 
 		generateTokenAndSetCookie(user._id, res);
 		console.log("User Login Successfull");
+=======
+		if (user.isFrozen) {
+			user.isFrozen = false;
+			await user.save();
+		}
+
+		generateTokenAndSetCookie(user._id, res);
+
+>>>>>>> origin/main
 		res.status(200).json({
 			_id: user._id,
 			name: user.name,
@@ -110,7 +164,10 @@ const logoutUser = (req, res) => {
 	try {
 		res.cookie("jwt", "", { maxAge: 1 });
 		res.status(200).json({ message: "User logged out successfully" });
+<<<<<<< HEAD
 		console.log("User Logout successfully");
+=======
+>>>>>>> origin/main
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 		console.log("Error in signupUser: ", err.message);
@@ -184,7 +241,10 @@ const updateUser = async (req, res) => {
 
 		// Find all posts that this user replied and update username and userProfilePic fields
 		await Post.updateMany(
+<<<<<<< HEAD
 			// syntax- 3 objects- filter, update,options
+=======
+>>>>>>> origin/main
 			{ "replies.userId": userId },
 			{
 				$set: {
@@ -205,4 +265,61 @@ const updateUser = async (req, res) => {
 	}
 };
 
+<<<<<<< HEAD
  export {getUserProfile, signupUser, loginUser, logoutUser, followUnFollowUser ,updateUser};
+=======
+const getSuggestedUsers = async (req, res) => {
+	try {
+		// exclude the current user from suggested users array and exclude users that current user is already following
+		const userId = req.user._id;
+
+		const usersFollowedByYou = await User.findById(userId).select("following");
+
+		const users = await User.aggregate([
+			{
+				$match: {
+					_id: { $ne: userId },
+				},
+			},
+			{
+				$sample: { size: 10 },
+			},
+		]);
+		const filteredUsers = users.filter((user) => !usersFollowedByYou.following.includes(user._id));
+		const suggestedUsers = filteredUsers.slice(0, 4);
+
+		suggestedUsers.forEach((user) => (user.password = null));
+
+		res.status(200).json(suggestedUsers);
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
+const freezeAccount = async (req, res) => {
+	try {
+		const user = await User.findById(req.user._id);
+		if (!user) {
+			return res.status(400).json({ error: "User not found" });
+		}
+
+		user.isFrozen = true;
+		await user.save();
+
+		res.status(200).json({ success: true });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+};
+
+export {
+	signupUser,
+	loginUser,
+	logoutUser,
+	followUnFollowUser,
+	updateUser,
+	getUserProfile,
+	getSuggestedUsers,
+	freezeAccount,
+};
+>>>>>>> origin/main
