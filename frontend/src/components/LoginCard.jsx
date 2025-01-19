@@ -25,34 +25,35 @@ export default function LoginCard() {
 	const setAuthScreen = useSetRecoilState(authScreenAtom);
 	const setUser = useSetRecoilState(userAtom);
 	const [loading, setLoading] = useState(false);
-
 	const [inputs, setInputs] = useState({
-		username: "",
-		password: "",
+	  username: "",
+	  password: "",
 	});
 	const showToast = useShowToast();
+  
 	const handleLogin = async () => {
-		setLoading(true);
-		try {
-			const res = await fetch("/api/users/login", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(inputs),
-			});
-			const data = await res.json();
-			if (data.error) {
-				showToast("Error", data.error, "error");
-				return;
-			}
-			localStorage.setItem("user-threads", JSON.stringify(data));
-			setUser(data);
-		} catch (error) {
-			showToast("Error", error, "error");
-		} finally {
-			setLoading(false);
+	  setLoading(true);
+	  try {
+		const res = await fetch("/api/users/login", {
+		  method: "POST",
+		  headers: {
+			"Content-Type": "application/json",
+		  },
+		  body: JSON.stringify(inputs),
+		});
+		const data = await res.json();
+		if (data.error) {
+		  showToast("Error", data.error, "error");
+		  return;
 		}
+		localStorage.setItem("user-threads", JSON.stringify(data));
+		setUser(data);
+		setAuthScreen("loggedIn"); // Assuming you want to set the screen to 'loggedIn' after login
+	  } catch (error) {
+		showToast("Error", error.message, "error"); // Use error.message here
+	  } finally {
+		setLoading(false);
+	  }
 	};
 	return (
 		<Flex align={"center"} justify={"center"}>

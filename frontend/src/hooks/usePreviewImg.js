@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useShowToast from "./useShowToast.js";
+import useShowToast from "./useShowToast";
 
 const usePreviewImg = () => {
 	const [imgUrl, setImgUrl] = useState(null);

@@ -18,7 +18,7 @@ const userSchema = mongoose.Schema(
 		},
 		password: {
 			type: String,
-			minLength: 6,
+			minLength: 4,
 			required: true,
 		},
 		profilePic: {
@@ -26,6 +26,7 @@ const userSchema = mongoose.Schema(
 			default: "",
 		},
 		followers: {
+            // array of strings
 			type: [String],
 			default: [],
 		},
@@ -35,7 +36,7 @@ const userSchema = mongoose.Schema(
 		},
 		bio: {
 			type: String,
-			default: "",
+			default: "Hey! There 👋",
 		},
 		isFrozen: {
 			type: Boolean,

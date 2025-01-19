@@ -1,7 +1,7 @@
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
+ import { v2 as cloudinary } from "cloudinary";
 
-import { v2 as cloudinary } from 'cloudinary';
 const createPost = async (req, res) => {
 	try {
 		const { postedBy, text } = req.body;

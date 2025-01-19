@@ -1,46 +1,50 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App.jsx";
-import "./index.css";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
-import { ColorModeScript } from "@chakra-ui/color-mode";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+
 import { BrowserRouter } from "react-router-dom";
-import { RecoilRoot } from "recoil";
+import { ChakraProvider } from '@chakra-ui/react'
+import { extendTheme } from '@chakra-ui/react';
+import {mode} from '@chakra-ui/theme-tools'
+import { ColorModeScript } from '@chakra-ui/react'
+
+import App from './App.jsx'
+import './index.css'
+import { RecoilRoot } from 'recoil';
 
 const styles = {
-  global: (props) => ({
-    body: {
-      color: mode("gray.800", "whiteAlpha.900")(props),
-      bg: mode("#FFF5E0", "#101010")(props),
-      backgroundImage: "url('./image/pback.jpg')",
-    },
-  }),
+	global: (props) => ({
+		body: {
+			// Font Color
+			color: mode("gray.800", "whiteAlpha.900")(props),
+			// Background Color
+			bg: mode("#FFF1DC", '#101010')(props),
+		},
+	}),
 };
 
 const config = {
-  initialColorMode: "dark",
-  useSystemColorMode: true,
+	initialColorMode: "dark",
+	useSystemColorMode: true,
 };
 
 const colors = {
-  gray: {
-    light: "#616161",
-    dark: "#1e1e1e",
-  },
+	gray: {
+		light: "#616161",
+		dark: "#1e1e1e",
+	},
 };
 
 const theme = extendTheme({ config, styles, colors });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RecoilRoot>
-      <BrowserRouter>
-        <ChakraProvider theme={theme}>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <App />
-        </ChakraProvider>
-      </BrowserRouter>
+	<RecoilRoot>
+    <BrowserRouter>
+      <ChakraProvider theme={theme}>
+        <App />
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      </ChakraProvider>
+    </BrowserRouter>
     </RecoilRoot>
-  </React.StrictMode>
-);
+  </React.StrictMode>,
+)

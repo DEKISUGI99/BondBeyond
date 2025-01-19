@@ -11,7 +11,7 @@ import {
 import protectRoute from "../middlewares/protectRoute.js";
 
 const router = express.Router();
-
+// Here Id's refer to post id
 router.get("/feed", protectRoute, getFeedPosts);
 router.get("/:id", getPost);
 router.get("/user/:username", getUserPosts);
