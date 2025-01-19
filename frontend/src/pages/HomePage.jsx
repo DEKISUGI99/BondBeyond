@@ -1,15 +1,66 @@
-import {Button, Flex,  } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import useShowToast from "../hooks/useShowToast";
+import Post from "../components/Post";
+import { useRecoilState } from "recoil";
+import postsAtom from "../atoms/postsAtom";
+// import SuggestedUsers from "../components/SuggestedUsers";
 
 const HomePage = () => {
-  return (
-    <Link to={"/Akshatsingh"}>
-      <Flex w={"full"} justifyContent={"center"}>
-        <Button mx={"auto"} >Visit Profile page</Button>
+	const [posts, setPosts] = useRecoilState(postsAtom);
+	const [loading, setLoading] = useState(true);
+	const showToast = useShowToast();
+	useEffect(() => {
+	 	const getFeedPosts = async () => {
+	 		setLoading(true);
+			// this is set as empty array bcz when going from userpage to homepage, the post loaded will first show post of user only
+			// then after few sec later show posts of followd users
+	 		setPosts([]);
+	 		try {
+				const res = await fetch("/api/posts/feed");
+	 			const data = await res.json();
+	 			if (data.error) {
+	 				showToast("Error", data.error, "error");
+	 				return;
+	 			}
+	// 			console.log(data);
+	// why not send it as array
+	 			setPosts(data);
+	 		} catch (error) {
+	 			showToast("Error", error.message, "error");
+	 		} finally {
+	 			setLoading(false);
+	 		}
+	 	};
+	 	getFeedPosts();
+	 }, [showToast, setPosts]);
 
-      </Flex>
-    </Link>
-  )
-}
+	return (
+		<Flex gap='10' alignItems={"flex-start"}>
+			<Box flex={70}>
+				{!loading && posts.length === 0 && <h1>Follow some users to see the feed</h1>}
 
-export default HomePage
+				{loading && (
+					<Flex justify='center'>
+						<Spinner size='xl' />
+					</Flex>
+				)}
+
+				{posts.map((post) => (
+					<Post key={post._id} post={post} postedBy={post.postedBy} />
+				))}
+			</Box>
+			<Box
+				flex={30}
+				display={{
+					base: "none",
+					md: "block",
+				}}
+			>
+				{/* <SuggestedUsers /> */}
+			</Box>
+		</Flex>
+	);
+};
+
+export default HomePage;

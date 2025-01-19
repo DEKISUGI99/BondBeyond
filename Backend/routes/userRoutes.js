@@ -1,18 +1,28 @@
-import express from 'express';
-import {signupUser,loginUser,logoutUser,followUnFollowUser, updateUser,getUserProfile} from '../controllers/usecontroller.js'
+import express from "express";
+import {
+  getUserProfile,
+  signupUser,
+  loginUser,
+  logoutUser,
+  followUnFollowUser, 
+  updateUser
+} from "../controllers/userController.js";
 import protectRoute from "../middlewares/protectRoute.js";
 
-const router = express.Router();
+const router=express.Router();
 
-
-// Body parsing middleware
-// router.use(express.json());
-// router.use(express.urlencoded({ extended: true }));
-router.get("/profile/:query",getUserProfile)
-router.post("/signup", signupUser);
-router.post("/login", loginUser);
-router.post("/logout", logoutUser);
+// Get User
+router.get("/profile/:query", getUserProfile);
+// Signup
+router.post("/signup",signupUser);
+// Login
+router.post("/login",loginUser);
+// Logout
+router.post("/logout",logoutUser);
+// Follow
 router.post("/follow/:id", protectRoute, followUnFollowUser);
-router.post("/update/:id", protectRoute, updateUser);
+// Update
+router.put("/update/:id", protectRoute, updateUser);
+
 
 export default router;
